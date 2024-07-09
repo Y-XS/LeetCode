@@ -1,6 +1,21 @@
-# LeetCode Note
+# Tips
 
-# TS
++ 回文数用栈或者双指针
++ 链表头最好单独分配空间，head->next再指向第一个元素，返回head->next即可
+
+
+
+# 常用方法
+
+## 双指针
+
+## 快慢指针
+
+## 哈希表
+
+
+
+# 经典例题
 
 ## T 228 
 双指针注意下表边界，用 i-1
@@ -71,4 +86,32 @@ string simplifyPath(string path) {
     return ret;
 }
 ```
+
+## T 206 反转链表
+
+## T 21 合并链表
+
+```c++
+ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+    //head单独分配空间，head->next再指向第一个元素，否则需要单独判断head
+    ListNode* head = new ListNode;
+    ListNode* p = head;
+    while(list1 && list2){
+        if(list2->val<list1->val){
+            p->next = list2;
+            list2 = list2->next;
+        }else{
+            p->next = list1;
+            list1 = list1->next;
+        }
+        p = p->next;
+    }
+    p->next = list1?list1:list2;
+    return head->next;
+}
+```
+
+
+
+
 
