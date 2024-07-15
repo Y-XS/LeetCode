@@ -5,6 +5,18 @@
 
 
 
+# 数据结构
+
+## 树
+
+### 二叉搜索树
+
+定义：
+
++ 节点左子树只包含 **小于** 当前节点的数
++ 节点的右子树只包含 **大于** 当前节点的数
++ 所有左子树和右子树自身必须也是二叉搜索树
+
 # 常用方法
 
 ## 双指针
@@ -12,6 +24,77 @@
 ## 快慢指针
 
 ## 哈希表
+
+
+
+# 二叉树
+
+二叉树构造：
+
+```c++
+//必须由两种遍历数组构造
+TreeNode* makeTree(vector<int>& preorder, vector<int>& inorder){
+    if(inorder.size() == 0 || preorder.size() == 0)
+        return nullptr;
+    TreeNode* root = new TreeNode;
+    root->val = preorder[0];
+    int splitPoint = 0;
+    for(int i=0;i<inorder.size();++i){
+        if(inorder[i] == root->val){
+            splitPoint = i;
+            break;
+        }
+    }
+    vector<int> inleft(inorder.begin(),inorder.begin()+splitPoint);
+    vector<int> inright(inorder.begin()+splitPoint+1,inorder.end());
+    vector<int> preleft(preorder.begin()+1,preorder.begin()+splitPoint+1);
+    vector<int> preright(preorder.begin()+splitPoint+1,preorder.end());
+    root->left = makeTree(preleft,inleft);
+    root->right = makeTree(preright,inright);
+    return root;
+}
+```
+
++ 先序遍历
++ 中序遍历
++ 后序遍历
++ 层序遍历
++ 递归
++ 迭代
+
+深度优先DFS
+
+```c++
+//知道左右子树最大深度l，r，则该二叉树最大深度为 max(l,r)+1
+int maxDepth(TreeNode* root) {
+    if (root == nullptr) return 0;
+    return max(maxDepth(root->left), maxDepth(root->right)) + 1;
+}
+```
+
+广度优先BFS
+
+```c++
+int maxDepth(TreeNode* root) {
+    if (root == nullptr) return 0;
+    queue<TreeNode*> Q;
+    Q.push(root);
+    int ans = 0;
+    while (!Q.empty()) {
+        int sz = Q.size();
+        while (sz > 0) {
+            TreeNode* node = Q.front();Q.pop();
+            if (node->left) Q.push(node->left);
+            if (node->right) Q.push(node->right);
+            sz -= 1;
+        }
+        ans += 1;
+    } 
+    return ans;
+}
+```
+
+
 
 
 
