@@ -1,7 +1,38 @@
 # Tips
 
++ 注意边界条件
+
 + 回文数用栈或者双指针
+
 + 链表头最好单独分配空间，head->next再指向第一个元素，返回head->next即可
+
++ 初始化二维数组时，注意指定数组大小
+
+  ```c++
+  vector<vector<int>> dp(n, vector<int>(m));
+  ```
+  
+  ```c++
+  //此题杨辉三角，数组大小不固定，需要显示指定
+  vector<vector<int>> generate(int numRows) {
+      if(numRows==0)
+          return {{}};
+      vector<vector<int>> ans(numRows);//注意此处
+      for(int i=0;i<numRows;++i){
+          ans[i].resize(i+1);;		//注意此处
+          for(int j=0;j<=i;++j){
+              if(j==0||j==i){
+                  ans[i][j]=1;
+                  continue;
+              }
+              ans[i][j] = ans[i-1][j-1] + ans[i-1][j];
+          }
+      }
+      return ans;
+  }
+  ```
+  
+  
 
 
 
@@ -24,6 +55,85 @@
 ## 快慢指针
 
 ## 哈希表
+
+
+
+## 回溯
+
+> 回溯思路：https://www.bilibili.com/video/BV1mG4y1A7Gu/?vd_source=39470039eed280e7cb9ce02e946c495b
+
+```c++
+//78题
+vector<vector<int>> ans;
+vector<int> tmp;
+vector<vector<int>> subsets(vector<int>& nums) {
+    if(nums.size()==0)
+        return ans;
+    backtrack(0,nums);
+    return ans;
+}
+void backtrack(int idx,const vector<int> &nums){
+    //判断边界条件
+    if(nums.size() == idx){
+        ans.push_back(tmp);
+        return;
+    }
+    //不选
+    backtrack(idx+1,nums);
+    //选择
+    tmp.push_back(nums[idx]);
+    backtrack(idx+1,nums);
+    tmp.pop_back();
+}
+```
+
+## 动态规划
+
+```c++
+//70题 爬楼梯
+int climbStairs(int n) {
+    if(n==1||n==2)
+        return n;
+    int a=1,b=2;
+    for(int i=3;i<=n;++i){
+        int tmp=b;
+        b=a+b;
+        a= tmp;
+    }
+    return b;
+}
+int climbStairs(int n) {
+    int p = 0, q = 0, r = 1;
+    for (int i = 1; i <= n; ++i) {
+        p = q; 
+        q = r; 
+        r = p + q;
+    }
+    return r;
+}
+```
+
+```c++
+//198 打家劫舍
+int rob(vector<int>& nums) {
+    if (nums.empty()) {
+        return 0;
+    }
+    int size = nums.size();
+    if (size == 1) {
+        return nums[0];
+    }
+    int first = nums[0], second = max(nums[0], nums[1]);
+    for (int i = 2; i < size; i++) {
+        int temp = second;
+        second = max(first + nums[i], second);
+        first = temp;
+    }
+    return second;
+}
+```
+
+
 
 
 
